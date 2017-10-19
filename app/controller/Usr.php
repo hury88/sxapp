@@ -17,14 +17,22 @@ class Usr extends KWAction
 	public function mbox()
 	{
 		$mid = I('get.mid', 0, 'intval');
-		if ($mid) {// 查看订单详情
-		    $this->assign(M('message_box')->find($mid));
+		if ($mid) {// 查看消息详情
+		    $this->assign(M('order')->find($mid));
+		    $this->assign('list', M('order_goods')->where(['order_id'=>$mid,'isstate'=>1])->order('order_goods_id desc')->select());
 		    $this->display('usr/msg/view');
-		} else {// 订单列表
-			$buyer_id = $this->getUserData('id');
-		    $this->assign('list', M('order')->where(['buyer_id'=>$buyer_id])->order('order_status asc,id desc')->select());
+		} else {// 消息列表
+			$uid = $this->getUserData('id');
+			$regtime = $this->getUserData('regtime');
+			$msg_res =  MsgBox::getData($uid,$regtime);
+		    $this->assign('list', $msg_res);
 		    $this->display('usr/msg/list');
 		}
+	}
+	public function mbox_clear()
+	{
+		MsgBox::clear($this->getUserData('id'));
+		$this->redirect('usr/mbox');
 	}
 
 	// 订单列表与详情 oid 区分
