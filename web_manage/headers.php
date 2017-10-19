@@ -20,7 +20,7 @@ require WEB_ROOT.'./include/chkuser.inc.php';
         	<img src="images/logo.png" />
         </div>
 
-        <div class="daohang fl" style="width: 760px;">
+        <div class="daohang fl" style="width: 850px;">
 			<? if ($_SESSION['Admin_BigMyMenu']=="super"){?>
 
         	<a href="mains.php"  class="on" target="righthtml">
@@ -51,25 +51,26 @@ require WEB_ROOT.'./include/chkuser.inc.php';
                 <img src="images/bug8.png" />
                 <p>系统设置</p>
             </a>
-            <a href="goods.php" target="righthtml">
-                <p style="color:orange;line-height: 142px;">所有商品</p>
-            </a>
-            <a style="opacity:.8;border:2px solid rgba(0,0,0,.1)" id="menu" href="javascript:void(0);">
+
+            <a style="opacity:.8;border:2px solid rgba(0,0,0,.1)"  href="goods.php" target="righthtml">
                 <img src="images/bug2.png" />
-                <p>隐藏菜单</p>
+                <p>所有商品</p>
             </a>
-            <script>
-                $('#menu').on('click',menueClose)
-                function menueClose(){
-                    $('#menu').off('click',menueClose).on('click',menueOpen).find('p').text('显示菜单')
-                    window.parent.document.getElementsByTagName('frameset')[1].cols = '0,*'
-                }
-                function menueOpen(){
-                    $('#menu').off('click',menueOpen).on('click',menueClose).find('p').text('隐藏菜单')
-                    window.parent.document.getElementsByTagName('frameset')[1].cols = '187,*'
-                }
-            </script>
-	<? }elseif($_SESSION['Admin_BigMyMenu']=="guwen"){}else{?>
+                <a href="order.php" target="righthtml" style="height:21px;width: 150px;">
+                    <p style="color:orange;border:red solid 1px; line-height: 21px;">所有订单（<?php echo M('order')->count();?>）</p>
+                </a>
+                <a href="order.php?order_status=0&shipping_status=0" target="righthtml" style="height:21px;width: 150px;">
+                    <p style="color:orange;border:red solid 1px; line-height: 21px;">未配送（<?php echo M('order')->where("order_status=0 and shipping_status=0")->count();?>）</p>
+                </a>
+
+                <a href="order.php?order_status=0&shipping_status=1" target="righthtml" style="height:21px;width: 150px;">
+                    <p style="color:orange;border:red solid 1px; line-height: 21px">已配送未完成（<?php echo M('order')->where("order_status=0 and shipping_status=1")->count();?>）</p>
+                </a>
+                <a href="order.php?order_status=1&shipping_status=1" target="righthtml" style="height:21px;width: 150px;">
+                    <p style="color:orange;border:red solid 1px; line-height: 21px;">已完成（<?php echo M('order')->where("order_status=1 and shipping_status=1")->count();?>）</p>
+                </a>
+
+            <? }elseif($_SESSION['Admin_BigMyMenu']=="guwen"){}else{?>
         	<a href="mains.php" style="background:url(images/hover.png) 0 0 repeat-x;" target="righthtml">
             	<img src="images/bug1.png" />
                 <p>工作台</p>
