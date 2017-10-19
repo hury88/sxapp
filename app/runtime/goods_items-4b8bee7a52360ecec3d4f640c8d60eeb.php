@@ -49,7 +49,7 @@
 							<span class="fl pri">￥<em><?php echo $market_price;?></em><i>/斤</i><a><?php echo $price;?><i></i></a></span>
 							<div class="btn" data-gid="<?php echo $goods_id;?>">
 								<button class="minus"><strong></strong></button>
-								<i class="num">0</i>
+								<i class="num" data-stock="<?php echo $stock;?>">0</i>
 								<button class="adds"><strong></strong></button>
 								<i class="price"><?php echo $market_price;?></i>
 							</div>
@@ -74,67 +74,86 @@
 		</div>
 	</body>
 	<script type="text/javascript" src="/public/tools/js/jquery.js"></script>
-<script type="text/javascript" src="/public/tools/js/kwjAlert.min.js"></script>
+<script type="text/javascript" src="/public/tools/js/alert.min.js"></script>
 <script type="text/javascript">
 function CollectGoodsData()
 {
-	var fd = {};
-	fd['cart'] = {};
-	$(".btn.selected").each(function(i){
-		console.log(i);
-		var gid = $(this).data("gid");
-		var num = $(this).find("i.num").text();
-		fd.cart[gid] = num;
-	})
-	httpPost('<?php echo U('cart/addRequest');?>', fd)
+	if ($(".btn.selected").length > 0) {
+		var fd = {cart:{}};
+		$(".btn.selected").each(function(i){
+			var gid = $(this).data("gid");
+			var num = $(this).find("i.num").text();
+			fd.cart[gid] = num;
+		})
+		httpPost('<?php echo U('cart/pushToCart');?>', fd)
+	} else {
+		dialog(3,['请添加商品'],{cancel:true,confirm:['去购物车','<?php echo U('cart');?>']})
+	}
 }
 $(function () {
+	var oTotalShow = $("#totalpriceshow")
+		oCartCount = $("#totalcountshow")
+	;
 	//加的效果
 	$(".adds").click(function () {
-		$(this).prevAll().css("display", "inline-block");
-		var n = $(this).prev().text();
-		var num = parseInt(n) + 1;
-		if (num == 0) { $(this).parent(".btn").removeClass("selected");return; }
-		$(this).parent(".btn").addClass("selected");
-		$(this).prev().text(num);
-		var danjia = $(this).next().text();//获取单价
-		var a = $("#totalpriceshow").html();//获取当前所选总价
-		$("#totalpriceshow").html((a * 1 + danjia * 1).toFixed(2));//计算当前所选总价
+		var oNumber = $(this).prev()
+			,oParentBtn = $(this).parent(".btn")
+			;
 
-		var nm = $("#totalcountshow").html();//获取数量
-		$("#totalcountshow").html(nm*1+1);
+		$(this).prevAll().css("display", "inline-block");
+
+		var num = parseInt(oNumber.text()) + 1;
+		var stock = oNumber.data("stock");
+		if (num == 0) { oParentBtn.removeClass("selected");return; }
+		if (num > stock) { dialog(3,['仅剩'+stock,'库存不足']);return;}
+		oParentBtn.addClass("selected");
+		oNumber.text(num);
+		// var danjia = $(this).next().text();//获取单价
+		setTotalRising(oParentBtn);
+		var nm = oCartCount.html();//获取数量
+		oCartCount.html(nm*1+1);
 		jss();//<span style='font-family: Arial, Helvetica, sans-serif;'></span>   改变按钮样式
 	});
 	//减的效果
 	$(".minus").click(function () {
-		var n = $(this).next().text();
-		var num = parseInt(n) - 1;
+		var oNumber = $(this).next()
+			,oParentBtn = $(this).parent(".btn")
+			;
+		var num = parseInt(oNumber.text()) - 1;
+		oNumber.text(num);//减1
 
-		$(this).next().text(num);//减1
+		setTotalReduce(oParentBtn);
 
-		var danjia = $(this).nextAll(".price").text();//获取单价
-		var a = $("#totalpriceshow").html();//获取当前所选总价
-		$("#totalpriceshow").html((a * 1 - danjia * 1).toFixed(2));//计算当前所选总价
-
-		var nm = $("#totalcountshow").html();//获取数量
-		$("#totalcountshow").html(nm * 1 - 1);
+		var nm = oCartCount.html();//获取数量
+		oCartCount.html(nm * 1 - 1);
 		//如果数量小于或等于0则隐藏减号和数量
 		if (num <= 0) {
 			$(this).next().css("display", "none");
 			$(this).css("display", "none");
 			$(this).parent(".btn").removeClass("selected");
 			jss();//改变按钮样式
-			 return
+			return
 		}
 	});
 	function jss() {
-		var m = $("#totalcountshow").html();
+		var m = oCartCount.html();
 		if (m > 0) {
 			$(".right").find("a").removeClass("disable");
 		} else {
 		   $(".right").find("a").addClass("disable");
 		}
 	};
+	function setTotalRising(that) {
+		var a = parseFloat(oTotalShow.html());//获取当前所选总价
+		var d = parseFloat(that.find('.price').text());//获取当前单价
+		oTotalShow.html((a + d).toFixed(2));//计算当前所选总价
+	};
+	function setTotalReduce(that) {
+		var a = parseFloat(oTotalShow.html());//获取当前所选总价
+		var d = parseFloat(that.find('.price').text());//获取当前单价
+		oTotalShow.html((a - d).toFixed(2));//计算当前所选总价
+	};
+
 
 });
 </script>

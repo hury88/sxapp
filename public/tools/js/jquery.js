@@ -6,7 +6,12 @@ void 0!==c?null===c?void r.removeAttr(a,b):e&&"set"in e&&void 0!==(d=e.set(a,c,b
 function httpPost(url,data)
 {
 	$.post(url, data, function(response){
-		response = JSON.parse(response);
+		try{
+			response = JSON.parse(response);
+		} catch(e) {
+			dialog(1,['请求错误']);
+			return;
+		}
 		var timer = 2000;
 		if (response.error>0 || response.error == 'undefined') {
 			alert({

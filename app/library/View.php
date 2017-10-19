@@ -4,7 +4,7 @@ class View
 	public static $data = [];// 当前类型信息
 	public $error = false;
 
-	public function __construct($id, $table)
+	public function __construct($id=null, $table='')
 	{
 		if($id) {
 			if ($data = M($table)->find($id)) {
@@ -73,7 +73,7 @@ class View
 			header('location:' . $redirect_url);
 		}
 
-		return self::$table($view);
+		return (self::$table($view));
 	}
 
 	public static function goods(&$obj)

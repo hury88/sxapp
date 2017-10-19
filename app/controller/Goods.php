@@ -17,13 +17,13 @@ class Goods extends KWAction
 		$condition = [];
 		$category_id_2 = I('get.category_id_2', 0, 'intval'); $category_id_2 && $condition['category_id_2'] = $category_id_2;
 		$global['q'] && $condition['goods_name'] = $global['q'];
-		$this->assign('items', $this->GoodsModel->where($condition)->field('id as goods_id,goods_name,goods_name_added,market_price,price,img1')->where($condition)->order('is_recommend desc, disorder desc, sendtime asc')->select() ? : []);
+		$this->assign('items', $this->GoodsModel->where($condition)->field('stock,id as goods_id,goods_name,goods_name_added,market_price,price,img1')->where($condition)->order('is_recommend desc, disorder desc, sendtime asc')->select() ? : []);
 		$this->assign('cart_goods_count', (new ShopCar)->getGoodsCount());
 		$this->display('goods/items');
 	}
 	// 详情
-	public function view($global){
-		$objview = $global['view'];
+	public function view(){
+		$objview = new View;
 		$this->assign('stockInfo', $objview->stock > 0 ? '<span class="fl">有货</span>' : '<span class="fl" style="color:red">无货</span>');
 		$this->display('goods/view');
 	}

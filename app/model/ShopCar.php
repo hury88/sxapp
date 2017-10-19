@@ -6,6 +6,10 @@
 class ShopCar extends KWModel
 {
 	const TABLE = 'cart';
+	const operator_rising = '+';
+	const operator_reduce = '-';
+	const operator_assign = '=';
+
 	#存储购物车数据
 	public $cart;
 
@@ -15,8 +19,6 @@ class ShopCar extends KWModel
 	* [info] :array  商品信息 [goods]=>array( ['id']=>商品ID , ['data'] => array( [商品ID]=>array ( [sell_price]价格, [count]购物车中此商品的数量 ,[type]类型goods,product ,[goods_id]商品ID值 ) ) ) , [product]=>array( 同上 ) , [count]购物车商品和货品数量 , [sum]商品和货品总额 ;
 	* [sum]  :int    商品总价格;
 	*/
-	private $cartExeStruct = array('goods' => array('id' => array(), 'data' => array() ),'product' => array( 'id' => array() , 'data' => array()),'count' => 0,'sum' => 0);
-
 	//购物车名字前缀
 	private $cartName    = 'cart';
 
@@ -32,47 +34,103 @@ class ShopCar extends KWModel
 	//购物车的存储方式
 	private $isLogin    = false;
 
+	public function push($gid, $num=0, $operate=self::operator_rising){
+		if (is_array($gid)) {
+			foreach ($gid as $id => $num) {
+				if (! $this->addOneGood((int)$gid, (int)$num, $operate)) {
+					unset($this->cart[$id]);
+				}
+			}
+			return true;
+		} else {
+			return $this->addOneGood((int)$gid, (int)$num, $operate);
+		}
+	}
 
+	public function pop($gids){
+		if (is_array($gid)) {
+			foreach ($gid as $id => $num) {
+				$this->removeOneGood($gid);
+			}
+		} else {
+			$this->removeOneGood($gid);
+		}
+		$this->syncCart();
+	}
 	/**
-	 * 添加商品
+	 * 添加一个商品
 	 */
-	public function addGoods($gid, $num, $bl_id=0)
+	public function addOneGood($gid, $num, $operate)
 	{
 	    // 检测当前购物车中是否存在此产品
-	    if ( isset($this->cart[$gid]) ) {
-	    	$this->cart[$gid]['num'] += $num;
-	    } else {
-	    	$this->cart[$gid] = [
-	    		'num' => $num,
-	    	];
+	    if ($this->detection_good($gid, $num)) {
+			$this->aog_good_cal($gid, $num, $operate);
+		    $this->syncCart();
+		    return true;
 	    }
-	    if ($this->cart[$gid]['num'] > Good::get($gid)->stock) {
-	    	$this->error = config('tips.cart')['un_stock'];
-	    	return false;
-	    }
-	    $this->syncCart();
-	    return true;
+	    return false;
 	}
 
 	/**
 	 * 添加商品
 	 */
-	public function removeGoods($gid)
+	public function removeOneGood($gid)
 	{
 	    // 检测当前购物车中是否存在此产品
 	    if (isset($this->cart[$gid])) {
 	    	unset($this->cart[$gid]);
-		    $this->syncCart();
 	    	return true;
 	    }
 	    return false;
+	}
+
+	private function aog_good_cal($gid, $num, $operate)
+	{
+		if (isset($this->cart[$gid])) {
+			switch ($operate) {
+				case self::operator_rising:
+					$this->cart[$gid] += $num;
+					break;
+				case self::operator_reduce:
+					$this->cart[$gid] -= $num;
+					break;
+				case self::operator_assign:
+					$this->cart[$gid] = $num;
+					break;
+				default :
+					$this->cart[$gid] = 1;
+					break;
+			}
+		} else {
+			$this->cart[$gid] = $num;
+		}
+		if ($this->cart[$gid] <= 0) {
+			unset($this->cart[$gid]);
+		}
+
+	}
+
+	private function detection_good($gid) {
+			// 有效商品id
+		if ($gif = M('goods')->field('stock')->find($gid)) {
+			$stock = $gif['stock'];
+			// 检测库存
+			if (isset($this->cart[$gid]) && $this->cart[$gid] > $stock) {
+				$this->error = config('tips.cart')['good_stock_lack'];
+				return false;
+			}
+			return true;
+		} else {
+			$this->error = config('tips_cart.good_404');
+		}
+		return false;
 	}
 
 	public function getGoodsCount()
 	{
 		$count = 0;
 		foreach ($this->cart as $gs) {
-			$count += $gs['num'];
+			$count += $gs;
 		}
 		return $count;
 	}
@@ -106,7 +164,7 @@ class ShopCar extends KWModel
 
 	public function __construct($uid=null)
 	{
-		if (is_null($uid)) $uid = Person::get()->_pk;
+		if (is_null($uid)) $uid = Person::get()->getPk();
 		// 用户未登录
 		if (is_null($uid)) {
 			$this->isLogin = false;

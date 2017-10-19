@@ -23,13 +23,13 @@ return [
         // 数据库连接DSN配置
         'dsn'             => '',
         // 服务器地址
-        'hostname'        => '192.168.0.88',
+        'hostname'        => '127.0.0.1',
         // 数据库名
         'database'        => 'db_sxpsapp',
         // 数据库用户名
-        'username'        => 'tongyong',
+        'username'        => 'root',
         // 数据库密码
-        'password'        => '123',
+        'password'        => 'L4t*L4t^)G',
         // 数据库连接端口
         'hostport'        => '3306',
         // 数据库连接参数
@@ -298,10 +298,12 @@ return [
         'book_success' => '订购成功后, 我们将尽快与您联系!',
         'book_failed' => '对不起, 因为邮件线路不顺畅, 请稍后再试, 给您带来麻烦我们非常抱歉!',
 
-        // 购车有关的提示
-        'cart' => [
-            'un_stock' => '提示:库存不足'
-        ],
+    ],
+
+    // 购车有关的提示
+    'tips_cart' => [
+        'good_stock_lack' => '提示:库存不足',
+        'good_404' => '未获取到商品信息,可能已下架'
     ],
 
     'translator'                  => [

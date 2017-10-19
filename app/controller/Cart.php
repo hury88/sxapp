@@ -26,12 +26,12 @@ class Cart extends KWAction
 		$this->display('cart');
 	}
 
-	public function addRequest()
+	public function pushToCart()
 	{
 		$cart = isset($_POST['cart']) ? $_POST['cart'] : [];
 		if ($cart) {
 			foreach ($cart as $gid => $num) {
-				if (! $this->shopCar->addGoods(intval($gid), intval($num)) ) {
+				if (! $this->shopCar->push($gid, $num) ) {
 					dieJson(3, $this->shopCar->error);
 				}
 			}
@@ -43,7 +43,7 @@ class Cart extends KWAction
 
 	public function __construct()
 	{
-		$this->shopCar = new ShopCar(Person::get()->_pk);
+		$this->shopCar = new ShopCar(Person::get()->getPk());
 	}
 
 }
