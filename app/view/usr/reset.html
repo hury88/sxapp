@@ -1,0 +1,27 @@
+{{replace file="TPL_PATH.'usr/_header.html'"}}
+		<script type="text/javascript" src="/style/js/jquery.js"></script>
+	</head>
+
+	<body class="form">
+		<div class="topnav" style="text-align: left;padding-left: 10%;color: #000000;height: 65px;">
+			<a href="javascript:window.history.back()" style="padding-top: 1px;"><img src="/style/img/r_03.jpg" style="margin-top: 16px;height: 25px;" /> </a>
+			<span>密码修改</span>
+			<a href="javascript:;" onclick="return model(this,'{{$resetRequest}}')" style="left: 85%;line-height: 60px;color: #333;font-size: 0.36rem;">保存</a>
+		</div>
+
+
+		<div class="register repasword">
+			<ul>
+				<li>
+					<input name="password[old]" type="password" placeholder="请输入旧密码" />
+				</li>
+				<li>
+					<input name="password[new]" class="yanma" type="text" placeholder="请输入新密码" />
+					<a id="ym" class="fr"><img src="/style/img/ym_03.png" height="15"/></a>
+				</li>
+			</ul>
+			<script type="text/javascript" src="/style/js/js.js" ></script>
+		</div>
+	</body>
+	{{replace file="TPL_PATH.'usr/_footer.html'"}}
+</html>

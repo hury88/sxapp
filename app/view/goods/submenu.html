@@ -1,0 +1,42 @@
+{{replace file="TPL_PATH.'usr/_header.html'"}}
+	<style>
+		.column ul li{text-align: center;}
+		.column ul li a p{text-align: center;color: #666666;font-size: 0.3rem;height: 0.8rem;line-height: 0.5rem;}
+		.no {position:absolute;top:50%;text-align: center;width: 100%;background: white; font-weight: bold; color: #666;}
+	</style>
+	</head>
+
+	<body>
+		{{if !$subnav}}
+		<div class="no">
+	    	<p>暂无数据，敬请期待！</p>
+	    </div>
+		{{/if}}
+		<div class="top_menu sub_menu">
+			<div class="home">
+				{{replace file="TPL_PATH.'_goback.html'"}}
+				{{replace file="TPL_PATH.'_searcher.html'"}}
+			</div>
+		</div>
+
+		<div class="column">
+			<ul class="clr">
+				{{foreach $subnav(id,img1)}}
+				<li>
+					<a href="{{U('goods/items', ['category_id_2'=>@id])}}">
+						<img src="{{src(@img1)}}" />
+						<p>{{@title}}</p>
+					</a>
+				</li>
+				{{/foreach}}
+			</ul>
+		</div>
+		<!--底部导航-->
+		<div class="foot">
+			<a href="{{U('index')}}"><img src="/style/img/nav5.png" /></a>
+			<a href="{{U('goods/index')}}"><img src="/style/img/nav6.png" style="width: 73%;"/></a>
+			<a href="{{U('cart')}}"><img src="/style/img/nav_07.png" /></a>
+			<a href="{{U('usr')}}"><img src="/style/img/nav_09.png" /></a>
+		</div>
+	</body>
+</html>

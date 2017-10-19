@@ -1,0 +1,47 @@
+<?php
+class _CLASS_
+{
+	public static function index()
+	{
+    	$list = '';
+    	$pageConfig = [
+	        'where' => m_gWhere(_PID_,_TY_),//条件
+	        'field' => 'id,title,ftitle,img1,introduce',//表
+	    ];
+		list($data, $pagestr, $totalRows) = pagenation($pageConfig);
+
+		foreach ($data as $value) {
+    		extract($value);
+    		$img1 = src($img1);$url = U('_CONTROLLER_/detail', ['id'=>$id]);
+    		$list .= <<<T
+				<li class="team-li">
+		            <a href="$url" title="$title">
+		                <div class="teamimg-box">
+		                    <img alt="$title" src="$img1"/>
+		                    <p class="teammore"></p>
+		                </div>
+		                <h3>$title</h3>
+		                <span>$ftitle</span>
+		                <p class="team-intro">
+		                    $introduce
+		                </p>
+		            </a>
+		        </li>
+T;
+		}
+		return <<<HTML
+
+			<div class="mauto team-list">
+			    <ul class="team-ul">
+					$list
+			    </ul>
+			</div>
+			<div class="mauto bigmedia pager">
+			    <ul>
+			    	$pagestr
+			    </ul>
+			</div>
+HTML;
+	}
+
+}

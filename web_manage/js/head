@@ -1,0 +1,219 @@
+	<link href="images/common.css" rel="stylesheet" type="text/css" />
+	<link href="images/style.css" rel="stylesheet" type="text/css" />
+	<script src="/public/tools/js/jquery.js" language="javascript"></script>
+	<script src="js/js.js" language="javascript"></script>
+	<script src="js/checkform.js" language="javascript"></script>
+	<link rel="stylesheet" href="/public/ui/layui/css/layui.css"  media="all">
+
+<?php if(defined('IN_PRO')) : //_pro页面?>
+	<!-- <script src="/public/tools/js/angular.min.js"></script> -->
+ 	<script src="/public/ui/layui/layui.js" language="javascript"></script>
+	<script charset="utf-8" src="myeditor/kindeditor-min.js"></script>
+	<script charset="utf-8" src="myeditor/lang/zh_CN.js"></script>
+	<script charset="utf-8" src="myeditor/plugins/code/prettify.js"></script>
+	<script>
+	KindEditor.ready(function(K) {
+		var editor1 = K.create('.editor_id', {
+			filterMode: false,//是否开启过滤模式
+			cssPath : 'myeditor/plugins/code/prettify.css',
+			uploadJson : 'myeditor/php/upload_json.php',
+			fileManagerJson : 'myeditor/php/file_manager_json.php',
+			allowFileManager : true,
+	 		afterBlur : function() {
+			 this.sync();
+			 K.ctrl(document, 13, function() {
+			  K('form[name=formlist]')[0].submit();
+			 });
+			 K.ctrl(this.edit.doc, 13, function() {
+			  K('form[name=formlist]')[0].submit();
+			 });
+			}
+		});
+		prettyPrint();
+	});
+	</script>
+	<style>
+		.plus-tag a,.plus-tag a em{background:url(images/hr_tagbg.png) no-repeat;}
+		.tagbtn a{font-size:12px;color:#333333;display:block;float:left;height:22px;line-height:22px;overflow:hidden;margin:0 10px 10px 0;padding:0 10px 0 5px;white-space:nowrap;}
+
+		.plus-tag{padding:0 0 10px 0;}
+		.plus-tag a{background-position:100% -22px;}
+		.plus-tag a span{float:left;}
+		.plus-tag a em{display:block;float:left;margin:5px 0 0 8px;width:13px;height:13px;overflow:hidden;background-position:-165px -100px;cursor:pointer;}
+		/*.plus-tag a:hover em{background-position:-168px -64px;}*/
+	</style>
+
+
+<?php else: ?>
+	<script src="/public/ui/layer/layer.js" language="javascript"></script>
+	<!--
+	-->
+
+	<script>
+		layer.load(3, {shade: false}); //0代表加载的风格，支持0-2
+	    function hasGou(obj){
+	        if ($(obj).hasClass('layui-checked')) {
+	            $(obj).text('√');
+	        }else{
+	            $(obj).text("_");
+	        }
+	    }
+	    function selectAll(obj){
+	        $status = $(obj).prev('input').prop('checked',function(i,val){return !val; }).prop('checked');
+	        $('.layui-i').prev('input').prop('checked',function(i,val){return $status; })
+	        if ($status) {
+	            $('.layui-i').addClass('layui-checked').text('√');
+	        }else{
+	            $('.layui-i').removeClass('layui-checked').text('_');
+	        }
+	        $(obj).toggleClass('layui-checked').text('√');
+	        hasGou(obj);
+	    }
+	    function getSelected(){
+	            var arr = new Array();
+	            $(".table tbody input:checked").each(function(i){arr[i] = $(this).val(); });
+	            return arr;
+	    }
+	    $(function(){
+	    	$('.layui-i').click(function(){
+	    	    $(this).prev('input').prop('checked',function(i,val){return !val; })
+	    	    $(this).toggleClass('layui-checked');
+	    	    hasGou(this);
+	    	})
+	        // $(document).on('click','#checkall',function(){var ss=$("#checkall").prop('checked'); $('#list :checkbox').prop('checked',ss); });
+	        $("#del").click(function() {
+	            var arr = getSelected();
+	            var ids = arr.join(',');
+	            var len = arr.length;
+	            if(ids){var flag = confirm("确定删除这些吗?"); } else{alert("请选择要删除的选项!")}
+	            if(flag){
+					layer.load(2, {shade: false}); //0代表加载的风格，支持0-2
+	                $.ajax({
+	                    url:'include/action.php',
+	                    type:'post',
+	                    data:{ids:ids,t:"<?=$table?>"},
+	                    datatype:"json",
+	                    success:function(data){
+	                    	data = eval("("+data+")");
+	                        if (data.status==1) {
+	                            for(i=0;i<len;i++){
+	                                $('#delid'+arr[i]).parents('tr').remove();
+	                            }
+	                            /*ajaxReload()*/
+	                            layer.msg(data.msg);
+	                        }else{
+	                        	layer.msg(data.msg);
+	                        }
+	                        setTimeout(function(){
+	                          layer.closeAll('loading');
+	                        }, 0);
+
+	                    }
+
+	                });
+	            }
+	        });
+
+            $(".del").click(function() {
+	            that = $(this)
+                var id = that.data('id');
+                layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){
+      				  var layerIndex = layer.load(2, {shade: false}); //0代表加载的风格，支持0-2
+                      $.ajax({
+                          url:'include/action.php',
+                          type:'post',
+                          data:{ids:id,t:"<?=$table?>"},
+                          datatype:"json",
+                          success:function(data){
+	                          data = eval("("+data+")");
+                              if (data.status==1) {
+                                  that.parents('tr').remove();
+                                  /*ajaxReload()*/
+                                  layer.msg('删除成功');
+                              }else{
+                              	layer.msg('删除失败');
+                              }
+                              layer.close(layerIndex);
+                          }
+
+                      });
+                  layer.close(index);
+                });
+
+            });
+            $('#jsSoForm select').change(function(){
+                $('#jsSoForm').submit();
+            })
+
+	    });
+	</script>
+
+
+	<style>
+	    /*.layui-form .layui-table thead th{}*/
+	    i.layui-i,i.alls{
+	        position: relative;
+	        top: 0;
+	        width: 16px;
+	        line-height: 16px;
+	        border: 1px solid #d2d2d2;
+	        font-size: 12px;
+	        border-radius: 2px;
+	        background-color: #fff;
+	        -webkit-transition: .1s linear;
+	        transition: .1s linear;
+	        display: inline-block;
+	        vertical-align: middle;
+	        color: #fff;
+	        cursor:pointer;
+	    }
+	    .cp {cursor:pointer;!important}
+	    i.layui-checked{
+	        border-color: #3466b6;
+	        background-color: #3466b6;
+	        color: #fff;
+	    }
+	    i:hover{
+	        border-color: #3466b6;
+	    }
+	    input[type=checkbox]{
+	        display:none;
+	    }
+	    .layui-btn-small {/*小型按钮*/
+	        height: 18px;
+	        line-height: 17px;
+	        padding: 0 10px;
+	        font-size: 12px !important;
+	        }
+	    i.layui-icon{
+	        font-size: 12px !important;
+	     }
+	    .layui-btn+.layui-btn {margin-left: 0px !important; }
+	    .layui-btn-warm{ color:Red;}
+	    a.btn-warm{ color:red !important;border:1px solid;}
+	    a.btn-danger{ color:orange !important;border:1px solid;}
+    	.first{text-align:center; }
+    	 b{display:inline-block;}
+    	 img{cursor:pointer;}
+		 a:hover{color:#000; }
+
+	</style>
+
+
+
+
+<?php endif ?>
+<ul class="layui-fixbar"><li class="layui-icon layui-fixbar-top" lay-type="top" style="display: none"></li></ul>
+<script>
+	$(window).scroll(function(){
+		if($('body').scrollTop()==0){
+			$('.layui-fixbar-top').fadeOut()
+		}else{
+			$('.layui-fixbar-top').fadeIn()
+		}
+	})
+	$('.layui-fixbar-top').click(function(){
+		$('html,body').animate({scrollTop:0},200)
+	})
+</script>
+

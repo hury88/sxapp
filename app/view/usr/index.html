@@ -1,0 +1,65 @@
+{{replace file="TPL_PATH.'usr/_header.html'"}}
+	</head>
+
+	<body style="background: #F4F4F4;">
+		<div class="center">
+
+			<div style="background: url({{$bgImage}});background-repeat: no-repeat;">
+				<div class="top clr">
+					<a href="javascript:window.history.back()" class="fl"><img src="/style/img/cent_06.png"/></a>
+					<a href="{{$setupView}}" class="fr"><img src="/style/img/cent_03.png"/></a>
+				</div>
+				<div class="my-info">
+					<a href="{{U('usr/myinfo')}}"><span><img src="{{$headImage}}"/></span></a>
+					<label>{{$userName}}</label>
+				</div>
+				<div class="bottom clr" style="background-image: url(/style/img/cent_11.png);background-repeat: no-repeat;background-position: center;">
+					<a>我的收藏</a>
+					<a href="{{U('usr/need')}}">新品需求</a>
+				</div>
+			</div>
+			<div class="info">
+				<ul>
+					<li>
+						<a href="{{U('usr/order')}}">
+							<span><img src="/style/img/cent_15.png"/></span>
+							<label>全部订单</label>
+							<span class="fr">{{$order_count}}个&emsp;</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{U('usr/faqs')}}">
+							<span><img src="/style/img/cent_18.png"/></span>
+							<label>常见问题</label>
+							<span class="fr">{{$faqs_count}}条&emsp;</span>
+						</a>
+					</li>
+					<li style="background-image: none;">
+						<a href="tel:{{global $system_phone}}">
+							<span><img src="/style/img/cent_20.png"/></span>
+							<label>客服电话 </label>
+							<em>{{global $system_phone}}</em>
+						</a>
+					</li>
+					<li style="background-image: none;">
+						<a target="_blank" href="{{global $qq_online}}">
+							<span><img src="/style/img/cen_03.png"/></span>
+							<label>在线客服</label>
+							<em>QQ:{{global $system_webqq}}</em>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+
+		<!--底部导航-->
+		<div class="foot">
+			<a href="{{U('index')}}"><img src="/style/img/nav5.png" /></a>
+			<a href="{{U('goods/index')}}"><img src="/style/img/nav_05.png" /></a>
+			<a href="{{U('cart')}}"><img src="/style/img/nav_07.png" /></a>
+			<a href="{{U('usr')}}"><img src="/style/img/nav08.png" /></a>
+		</div>
+	</body>
+	{{replace file="TPL_PATH.'usr/_footer.html'"}}
+</html>

@@ -1,0 +1,7 @@
+{
+	"关键词,列表" : ["关键词,列表", "strReplace(['_PID_'=>$pid, '_TY_'=>$ty, '_FUNCTION_'=>$function], $html->strings)"],
+	"分类,列表" : ["分类,列表", "strReplace(['_PID_'=>$pid, '_TY_'=>$ty, '_FUNCTION_'=>$function], $html->strings)"],
+	"不分页,图片,列表" : ["不分页,图片,列表", "strReplace(['_PID_'=>$pid, '_TY_'=>$ty, '_FUNCTION_'=>$function], $html->strings)"],
+	"分页,图片,列表" : ["分页,图片,列表", "strReplace(['_PID_'=>$pid, '_TY_'=>$ty, '_FUNCTION_'=>$function], $html->strings)"],
+	"分页,有字段需要拆分为数组,图片,列表" : ["分页,有字段需要拆分为数组,图片,列表", "strReplace(['_PID_'=>$pid, '_TY_'=>$ty, '_FUNCTION_'=>$function], $html->strings)"]
+}

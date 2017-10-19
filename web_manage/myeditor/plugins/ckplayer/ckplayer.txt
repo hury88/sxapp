@@ -1,0 +1,1 @@
+{v->50}{p->0}{f->url.php?id=[$pat]}{s->1}{i->}{d->}{u->}{l->}{r->}{t->5}{e->0}{x->ckplayer.xml}

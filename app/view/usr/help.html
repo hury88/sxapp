@@ -1,0 +1,30 @@
+{{replace file="TPL_PATH.'usr/_header.html'"}}
+		<script type="text/javascript" src="/style/js/jquery.js"></script>
+		<style>.subbav{display: none;}</style>
+	</head>
+
+	<body>
+		<div class="topnav" style="text-align: left;padding-left: 10%;color: #000000;">
+			<a href="javascript:window.history.back();" style="padding-top: 1px;"><img src="/style/img/r_03.jpg"  style="margin-top: 16px;height: 28px;"/> </a>
+			<span>帮助中心</span>
+		</div>
+		<div class="container">
+			{{foreach $items(key,row)}}
+			<div class="mainbav">
+				<h2>Q{{@key+1}}、{{@title}}</h2>
+				<img src="/style/img/zk7.jpg" class="i1"/>
+				<img src="/style/img/zk8.jpg" class="i2" />
+				<div class="subbav">
+					{{htmlspecialchars_decode(@content)}}
+				</div>
+			</div>
+			{{/foreach}}
+			</div>
+
+			<script type="text/javascript" src="/style/js/js.js" ></script>
+
+		</div>
+
+	</body>
+
+</html>

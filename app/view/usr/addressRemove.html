@@ -1,0 +1,68 @@
+{{replace file="TPL_PATH.'usr/_header.html'"}}
+		<script type="text/javascript" src="/style/js/jquery.js"></script>
+		<style>
+			.xuanzhong img {
+			    top: 0.7rem;
+			    left: 5%;
+			}
+			.img2{display: none;}
+
+		</style>
+	</head>
+
+	<body style="background: #f6f6f6;">
+		<div class="topnav" style="text-align: left;padding-left: 10%;color: #000000;height: 65px;">
+			<a href="javascript:window.history.back()" style="padding-top: 1px;"><img src="/style/img/r_03.jpg" style="margin-top: 16px;height: 25px;" /> </a>
+			<span>删除收货地址</span>
+			<a href="javascript:window.history.back()" style="left: 85%;line-height: 60px;color: #333;font-size: 0.36rem;">取消</a>
+		</div>
+
+		<div class="choice">
+			<ul>
+				{{foreach $items(key,row)}}
+				<li class="clr">
+					<a class="xuanzhong fl" data-id="{{@id}}"><img src="/style/img/gwc_13.png" /><img src="/style/img/gwc_08.png" class="img2" /></a>
+					<div class="fr">
+						<p>{{cutstr($address.'-'.$pcd,15)}}</p>
+						<span>{{cutstr(@consigner,5)}}&emsp;&emsp;{{@gender==1?'女士':'先生'}}&emsp;&emsp;{{str_replace(substr(@mobile,3,-3),'*****',$mobile)}}</span>
+					</div>
+				</li>
+				{{/foreach}}
+
+			</ul>
+		</div>
+		<div class="confirm">确认删除</div>
+	</body>
+	<script>
+		$(".xuanzhong").click(function() {
+
+			var thisimg = $(this).find('.img2');
+			if(thisimg.css('display') == 'block') {
+				thisimg.hide();
+				$(this).removeClass("kw-selected")
+			} else {
+				$(this).find(".img2").show();
+				$(this).addClass("kw-selected")
+			}
+
+		});
+		$(".confirm").click(function(){
+			if ($(".kw-selected").length >= 1) {
+				$(".kw-selected").each(function(){
+
+				})
+				$.post("{{U('usr/addressRemoveRequest')}}", data, function(response){
+					response = JSON.parse(response);
+					var timer = 2000;
+					if (response.error>0 || response.error == 'undefined') {
+						alert(response.message)
+						// dialog(1,[response.message]);
+					} else {
+						alert(response.message + ", 跳转去:" + response.redirect)
+						// dialog(2,[response.message], [cancel:['删除成功', response.redirect]]);
+					}
+				});
+			};
+		})
+	</script>
+</html>

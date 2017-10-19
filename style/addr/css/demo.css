@@ -1,0 +1,8 @@
+.g-flexview { padding-top: 3rem; background: #fff; }
+.cell-item { display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; position: relative; padding-left: 0.24rem; overflow: hidden; }
+.cell-left { color: #333; font-size: 0.3rem; white-space: nowrap; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; }
+.cell-right { -webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex: 1; width: 100%; min-height: 1rem; color: #525252; text-align: right; font-size: 0.26rem; padding-right: 0.24rem; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; -webkit-box-pack: end; -webkit-justify-content: flex-end; -ms-flex-pack: end; justify-content: flex-end; }
+.cell-input { -webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex: 1; height: 1rem; border: none; font-size: 0.3rem; background: transparent; color: #555; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-pack: start; -webkit-justify-content: flex-start; -ms-flex-pack: start; justify-content: flex-start; text-align: left; }
+.cell-arrow:after { margin-left: .05rem; margin-right: -0.08rem; display: block; font-family: 'YDUI-INLAY'; font-size: 0.34rem; color: #C9C9C9; content: '\e608'; }
+.m-celltitle { padding: 0 0.24rem 0.1rem; font-size: 0.3rem; text-align: left; color: #888; position: relative; z-index: 1; }
+input {font-family: 'Microsoft Yahei';}
