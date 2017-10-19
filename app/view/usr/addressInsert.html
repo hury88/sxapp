@@ -1,48 +1,78 @@
-<!DOCTYPE html>
-<html>
-
-	<head>
-		<meta charset="utf8" />
-		<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-		<title></title>
-		<link rel="stylesheet" href="css/style.css" />
-		<script type="text/javascript" src="js/rem.js"></script>
-		
+{{replace file="TPL_PATH.'usr/_header.html'"}}
+	<link rel="stylesheet" href="/style/addr/css/ydui.css">
+		<script type="text/javascript" src="/style/addr/js/ydui.flexible.js"></script>
 	</head>
 
 	<body>
-		<div class="topnav" style="text-align: left;padding-left: 10%;color: #000000;">
-			<a style="padding-top: 1px;"><img src="img/r_03.jpg" style="margin-top: 16px;height: 25px;" /> </a>
-			<span>添加收货地址</span>
+		<div class="topnav" style="text-align: center;padding-left: 10%;color: #000000;">
+			<a href="javascript:window.history.back()" style="padding-top: 1px;"><img src="/style
+				/img/r_03.jpg" style="margin-top: 16px;height: 25px;" /> </a>
+			{{if $addressid}}
+			<span>编辑收货地址</span>
+			{{else}}
+			<span>新建收货地址</span>
+			{{/if}}
 		</div>
-		<form class="container">
+		<form class="container form">
 			<dl>
 				<dt style="border-bottom: 1px solid #ccc;">联系人</dt>
 				<dd>
 					<label>姓名：</label>
-					<input class="inputname" type="text" placeholder="请输入姓名" />
+					<input name="consigner" value="{{$ai.consigner}}" class="inputname" type="text" placeholder="请输入姓名" />
 				</dd>
 				<dd  class="redio" style="color: #999999;font-size: 0.34rem;">
-					<input type="radio" name="sex"> 先生
-					<input type="radio" name="sex"> 女士
+					<input name="gender" value="1" checked="<?php echo $this->_vars['ai']['gender']==1?'true':'false'?>" type="radio"> 女士
+					<input name="gender" value="2" checked="<?php echo $this->_vars['ai']['gender']==2?'true':'false'?>" type="radio"> 先生
 				</dd>
 				<dd style="border: none;background: none;">
 					<label>手机：</label>
-					<input style="width: 5.8rem;" type="tel" placeholder="请输入收货手机号码，以便配送员联系您" />
+					<input name="mobile" value="{{$ai.mobile}}" style="width: 5.8rem;" type="tel" placeholder="请输入收货手机号码，以便配送员联系您" />
 				</dd>
 				<dt style="border-bottom: 1px solid #ccc;border-top: 1px solid #ccc;">收货地址</dt>
 				<dd class="wbj">
-					<label>小区/大厦/学校：</label>
-					<a href="#" class="adrsee">点击选择</a>
+					<label>所在地区：</label>
+                    <input id="J_Address_hidden" type="hidden" name="pcd" value="{{$ai.pcd}}">
+					<a href="#" class="adrsee" id="J_Address">{{$ai.pcd}}</a>
 				</dd>
 				<dd class="wbj">
-					<label>楼号-门牌号：</label>
-					<span style="color: #999;">例：12楼102室</span>
+					<label>详细地址：</label>
+					<input name="address" value="{{$ai.address}}" type="text" style="color: #999;" placeholder="街、区 楼牌号">
 				</dd>
+				<input type="hidden" name="addrid" value="{{$addressid}}">
+				<!-- <dd class="wbj">
+					<label>备注：</label>
+					<input name="remark" value="" type="text" style="color: #999;" placeholder="(选填)">
+				</dd> -->
 			</dl>
+			<a onclick="model(this,'{{U('usr/addressAdd')}}');return" style="text-align:center;background-color:#D82323;line-height:2.5;position:absolute;bottom:15px;color:#fff;left:32.5%;width:35%;height:45px;border:none;">保存</a>
 		</form>
-		
+
+		{{replace file="TPL_PATH.'usr/_footer.html'"}}
+		<script type="text/javascript" src="/style/addr/js/ydui.js"></script>
+		<script type="text/javascript" src="/style/addr/js/ydui.citys.js"></script>
+		<script type="text/javascript">
+		//设置默认值
+		!function () {
+			var $target = $('#J_Address');
+
+			$target.citySelect({
+				provance: '{{$ai.province}}',
+				city: '{{$ai.city}}',
+				area: '{{$ai.district}}'
+			});
+
+			$target.on('click', function (event) {
+				event.stopPropagation();
+				$target.citySelect('open');
+			});
+
+			$target.on('done.ydui.cityselect', function (ret) {
+				$(this).html(ret.provance + ' ' + ret.city + ' ' + ret.area);
+				$("#J_Address_hidden").val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+			});
+		}();
+		</script>
 	</body>
-	
+
 
 </html>

@@ -13,6 +13,18 @@ class Usr extends KWAction
 		}
 	}
 
+	public function order()
+	{
+		$oid = I('get.oid', 0, 'intval');
+		if ($oid) {// 查看订单详情
+		    $this->display('order/view');
+		} else {// 订单列表
+			$buyer_id = $this->getUserData('id');
+		    $this->assign('list', M('order')->where(['buyer_id'=>$buyer_id])->order('order_status asc,id desc')->select());
+		    $this->display('order/list');
+		}
+	}
+
 	public function addressList()
 	{
 	    $addresslist = M('usr_address')->where('uid='.$this->id)->order('is_default desc')->select();
@@ -169,6 +181,10 @@ class Usr extends KWAction
 	public function address()
 	{
 		$this->display('usr/address');
+	}
+
+	private function getUserData($field) {
+		return $field ? $this->_data[$field] : $this->_data;
 	}
 
 }

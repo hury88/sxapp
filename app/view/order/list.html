@@ -1,0 +1,38 @@
+{{replace file="TPL_PATH.'usr/_header.html'"}}
+
+	</head>
+
+	<body style="background: #F4F4F4;">
+		<div class="topnav" style="color: #000000;border-bottom: 8px solid #F4F4F4;height: 65px;">
+			<a href="javascript:window.history.back();" style="padding-top: 1px;"><img src="/style/img/r_03.jpg" style="margin-top: 16px;height: 25px;" /> </a>
+			<span>我的订单</span>
+		</div>
+
+		<div class="carnum order">
+			<ul>
+				{{foreach $list(key,row)}}
+				<a href="{{U('usr/order', ['oid'=>@id])}}"><div class="oderinfo" style="text-align:left"><span>订单号 : {{@order_no}}</span><span class="fr">查看详情</span></div></a>
+				<?php $count = 0; ?>
+				<?php foreach(Order::getOrderGoods($id) as $g) { ?>
+				<li class="clr">
+					<a href="{{U('goods/view', ['id'=>$g['id']])}}" class="productimg fl"><img src="{{src($g['img1'])}}" /></a>
+					<div class="fr">
+						<div class="clr">
+							<p class="fl">{{$g['goods_name']}}</p>
+							<p class="fr">￥{{$g['price']}}</span>
+						</div>
+						<div class="clr add">
+							<span class="fl pri">{{$g['goods_name_added']}}</span>
+							<span class="fr pri">x{{$g['num']}}</span>
+						</div>
+					</div>
+				</li>
+				<?php $count += $g['num']; ?>
+				<?php } ?>
+				<div class="oderinfo"><span>共{{$count}}件商品</span><span>合计:￥{{$g['goods_money']}}</span></div>
+				{{/foreach}}
+			</ul>
+
+		</div>
+	</body>
+</html>
