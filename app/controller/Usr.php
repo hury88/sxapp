@@ -13,10 +13,27 @@ class Usr extends KWAction
 		}
 	}
 
+	// 消息列表与详情 mid区分
+	public function mbox()
+	{
+		$mid = I('get.mid', 0, 'intval');
+		if ($mid) {// 查看订单详情
+		    $this->assign(M('message_box')->find($mid));
+		    $this->display('usr/msg/view');
+		} else {// 订单列表
+			$buyer_id = $this->getUserData('id');
+		    $this->assign('list', M('order')->where(['buyer_id'=>$buyer_id])->order('order_status asc,id desc')->select());
+		    $this->display('usr/msg/list');
+		}
+	}
+
+	// 订单列表与详情 oid 区分
 	public function order()
 	{
 		$oid = I('get.oid', 0, 'intval');
 		if ($oid) {// 查看订单详情
+		    $this->assign(M('order')->find($oid));
+		    $this->assign('list', M('order_goods')->where(['order_id'=>$oid])->order('order_goods_id desc')->select());
 		    $this->display('order/view');
 		} else {// 订单列表
 			$buyer_id = $this->getUserData('id');
@@ -65,7 +82,7 @@ class Usr extends KWAction
 		$this->assign('headImage', $headimg);
 		$this->assign('bgImage', $bgimg);
 
-		$this->assign('order_count', Order::get()->count(['buyer_id'=>$this->id]));
+		$this->assign('order_count', OrderM::get()->MD->where(['buyer_id'=>$this->id])->count());
 		$this->assign('faqs_count', M('news')->where(m_gWhere(3,17))->count());
 
 		$this->display('usr/index');

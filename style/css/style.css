@@ -38,7 +38,9 @@ body { max-width: 640px;  margin: auto; font-size: 18px;font-family: "微软雅�
 
 
 /*index3*/
-.content a{border-bottom: 1px solid #dee7ec;display: block;}
+.content a{overflow: hidden;border-bottom: 1px solid #dee7ec;display: block;height: 2.22rem;box-sizing: border-box;text-align: center;}
+.content a p{color: #000;font-size: 0.32rem;padding-top: 0.18rem;line-height: 0.4rem;height: 0.4rem;}
+.content a span{color: #666;font-size: 0.26rem;display: block;}
 .content .fl{width: 27.75%;border-right: 1px solid #dee7ec;display: inline-block;box-sizing: border-box;}
 .content .fl:nth-child(1) {display: inline-block;width: 44.5%;box-sizing: border-box;}
 .content .fl:last-child{border-right: 1px solid #fff;}

@@ -15,21 +15,21 @@
 				<?php $count = 0; ?>
 				<?php foreach(Order::getOrderGoods($id) as $g) { ?>
 				<li class="clr">
-					<a href="{{U('goods/view', ['id'=>$g['id']])}}" class="productimg fl"><img src="{{src($g['img1'])}}" /></a>
+					<a href="{{U('goods/view', ['id'=>$g['goods_id']])}}" class="productimg fl"><img src="{{src(@g['img1'])}}" /></a>
 					<div class="fr">
 						<div class="clr">
-							<p class="fl">{{$g['goods_name']}}</p>
-							<p class="fr">￥{{$g['price']}}</span>
+							<p class="fl">{{@g['goods_name']}}</p>
+							<p class="fr">￥{{@g['price']}}</span>
 						</div>
 						<div class="clr add">
-							<span class="fl pri">{{$g['goods_name_added']}}</span>
-							<span class="fr pri">x{{$g['num']}}</span>
+							<span class="fl pri">{{@g['goods_name_added']}}</span>
+							<span class="fr pri">x{{@g['num']}}</span>
 						</div>
 					</div>
 				</li>
 				<?php $count += $g['num']; ?>
 				<?php } ?>
-				<div class="oderinfo"><span>共{{$count}}件商品</span><span>合计:￥{{$g['goods_money']}}</span></div>
+				<div class="oderinfo"><span>共{{@count}}件商品</span> <span>合计:￥{{@goods_money}}</span></div>
 				{{/foreach}}
 			</ul>
 

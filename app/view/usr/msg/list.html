@@ -1,0 +1,39 @@
+{{replace file="TPL_PATH.'usr/_header.html'"}}
+		<script type="text/javascript" src="/style/js/jquery.js"></script>
+		<style>
+			.infocenter ul li{border-bottom: 1px solid #cccccc !important;padding: 0;background-repeat: no-repeat;background-position: 4% center;background-size: 0.18rem;padding-left: 9%;padding-right: 3%;}
+		    /*.infocenter ul li:last-child{background-image: none;}*/
+			.infocenter ul li em{font-size:0.28rem;color: #999;}
+		</style>
+	</head>
+	<body>
+		<div class="topnav" style="border-bottom: 1px solid #f0f0f0;text-align: left;padding-left: 10%;color: #000000;height: 65px;">
+			<a href="javascript:window.history.back();" style="padding-top: 1px;"><img src="/style/r_03.jpg" style="margin-top: 16px;height: 25px;" /> </a>
+			<span>消息中心</span>
+			<a href="javascript:window.history.back();" style="left: 86%;line-height: 60px;color: #333;font-size: 0.36rem;">清空</a>
+		</div>
+		<div class="choice infocenter">
+			<ul>
+				{{foreach $list(k,v)}}
+				<a href="#"><li class="clr" <?php echo $isread ? 'style="background-image: url(/style/img/dian.png);"' : '' ?>>
+					<span class="fl">关于生鲜APP升级通知</span>
+					<em class="fr">2017-10-19</em>
+				</li></a>
+				{{/foreach}}
+				<li class="clr">
+					<span class="fl">关于生鲜APP升级通知</span>
+					<em class="fr">2017-10-19</em>
+				</li>
+				<li class="clr">
+					<span class="fl">关于生鲜APP升级通知</span>
+					<em class="fr">2017-10-19</em>
+				</li>
+				<li class="clr">
+					<span class="fl">关于生鲜APP升级通知</span>
+					<em class="fr">2017-10-19</em>
+				</li>
+			</ul>
+		</div>
+
+	</body>
+</html>

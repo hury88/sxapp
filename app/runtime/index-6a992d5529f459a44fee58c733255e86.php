@@ -44,7 +44,7 @@
 				<form action="<?php echo U('goods/items');?>" style="background-image: url(/style/img/ss_06.png);background-repeat: no-repeat;background-size: 100%;">
 					<input name="q" type="submit" value="" style="width: 38%;"></input><input class="fr" type="text" placeholder="生鲜配送产品" />
 				</form>
-				<a href="#" class="fr">
+				<a href="<?php echo U('usr/mbox');?>" class="fr">
 					<img src="/style/img/menu_05.png" />
 				</a>
 			</div>
@@ -107,15 +107,33 @@
 		<!--内容-->
 		<div class="content clr distance" style="border-bottom: none;">
 			<div class="fl">
-				<a href="#" style="border-bottom: 2px solid #dee7ec;"><img src="/style/img/content_16.jpg" /></a>
+				<a href="#" style="border-bottom: 1px solid #dee7ec;height: 4.44rem;"><img src="/style/img/content_16.jpg" /></a>
+			</div>
+			<!-- <?php foreach ($this->_vars['index_tui'] as $key=>$row) {@extract($row);?> -->
+			<!-- <?php }?> -->
+			<div class="fl">
+				<a href="#">
+					<p>淡水虾</p>
+					<span>500g</span>
+					<img src="/style/img/content03.jpg" />
+				</a>
+				<a href="#">
+					<p>猪肉水饺</p>
+					<span>营养美味</span>
+					<img src="/style/img/content09.jpg" />
+				</a>
 			</div>
 			<div class="fl">
-				<a href="#"><img src="/style/img/content03.jpg" /></a>
-				<a href="#"><img src="/style/img/content09.jpg" /></a>
-			</div>
-			<div class="fl">
-				<a href="#"><img src="/style/img/content05.jpg" /></a>
-				<a href="#"><img src="/style/img/content08.jpg" /></a>
+				<a href="#">
+					<p>精品五花肉</p>
+					<span>营养品质肉</span>
+					<img src="/style/img/content05.jpg" />
+				</a>
+				<a href="#">
+					<p>嫩豆腐</p>
+					<span>健康绿色</span>
+					<img src="/style/img/content08.jpg" />
+				</a>
 			</div>
 		</div>
 

@@ -24,21 +24,21 @@
 				<?php $count = 0; ?>
 				<?php foreach(Order::getOrderGoods($id) as $g) { ?>
 				<li class="clr">
-					<a href="<?php echo U('goods/view', ['id'=>$g['id']]);?>" class="productimg fl"><img src="<?php echo src($g['img1']);?>" /></a>
+					<a href="<?php echo U('goods/view', ['id'=>$g['goods_id']]);?>" class="productimg fl"><img src="<?php echo src($g['img1']);?>" /></a>
 					<div class="fr">
 						<div class="clr">
-							<p class="fl"><?php echo $this->_vars['g']['goods_name'];?></p>
-							<p class="fr">￥<?php echo $this->_vars['g']['price'];?></span>
+							<p class="fl"><?php echo $g['goods_name'];?></p>
+							<p class="fr">￥<?php echo $g['price'];?></span>
 						</div>
 						<div class="clr add">
-							<span class="fl pri"><?php echo $this->_vars['g']['goods_name_added'];?></span>
-							<span class="fr pri">x<?php echo $this->_vars['g']['num'];?></span>
+							<span class="fl pri"><?php echo $g['goods_name_added'];?></span>
+							<span class="fr pri">x<?php echo $g['num'];?></span>
 						</div>
 					</div>
 				</li>
 				<?php $count += $g['num']; ?>
 				<?php } ?>
-				<div class="oderinfo"><span>共<?php echo $this->_vars['count'];?>件商品</span><span>合计:￥<?php echo $this->_vars['g']['goods_money'];?></span></div>
+				<div class="oderinfo"><span>共<?php echo $count;?>件商品</span> <span>合计:￥<?php echo $goods_money;?></span></div>
 				<?php }?>
 			</ul>
 
