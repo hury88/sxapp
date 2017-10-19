@@ -70,7 +70,63 @@ function model(thisObj, actionUrl){
 	     d = json.dom
          $(thisObj).removeAttr('disabled')
          var timer = 2000;
+         console.log(s);
+         console.log(s==200);
          if(s==200){
+             if (d) {
+             	dialog([2,timer],[m],{cancel:["跳转",d]})
+             	console.log(123213);
+	             /*alert({
+	             	title : m,
+	             	text : "",
+	             	icon : "success",
+	             	button : "跳转",
+             		timer: timer,
+	             })
+	             $(document).on("click", "button.kwj-button", function(){
+		             window.location.href = d;
+	             })*/
+             } else {
+             	// dialog([2,timer],[m],{cancel:[false,d]})
+
+             	alert({
+             		title : m,
+             		text : "",
+             		icon : "success",
+             		timer: timer
+             	})
+	             $(document).on("click", "button.kwj-button", function(){
+		             window.location.reload();
+	             })
+	             // window.location.reload()
+             }
+	             setTimeout(function(){
+	             	$("button.kwj-button").click();
+	             },timer)
+         }else if(s==100){
+     	    alert({
+     	    	title : m,
+     	    	text : "",
+     	    	icon : "success",
+     			timer: timer,
+     	    })
+         }else if(s==101){// 发送验证码
+             alert({
+             	title : m,
+             	text : "",
+             	icon : "success",
+         		timer: timer,
+             })
+     	    settime(thisObj,60);
+         }else{
+     		// layer.open({content: json.msg ,btn: '确定'})
+	 		dialog([1,timer],[m]);
+            $(document).on("click", "button.kwj-button--confirm", function(){
+             form.find("input[name="+d+"]").focus()
+            })
+         }
+
+         /*if(s==200){
      		 // layer.open({content: json.msg ,btn: '确定'})
              // alert(m)
              if (d) {
@@ -125,7 +181,7 @@ function model(thisObj, actionUrl){
 	          $(document).on("click", "button.kwj-button", function(){
 	             form.find("input[name="+d+"]").focus()
 	          })
-         }
+         }*/
      },
      error : function(){
      	$(thisObj).removeAttr('disabled');

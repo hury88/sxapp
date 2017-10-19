@@ -98,6 +98,7 @@ class Usr extends KWAction
 	// 设置页面
 	public function setup()
 	{
+		$this->assign('resetView', U('reset'));
 		$this->display('usr/setup');
 	}
 	// 帮助中心

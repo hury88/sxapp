@@ -279,7 +279,7 @@ return [
         #修改密码
         'orignPassword' => '请输入原始密码',
         'orignPassword_confirm_failed' => '原始密码不正确',
-        'newPassword' => '新密码长度不正确',
+        'newPassword' => '新密码长度不正确,请输入8-20位字符',
         'newEqualsOld' => '新密码与原始密码相同',
         'repeatNewPassword' => '新密码与确认密码不一致',
         'modify_success'  => '密码修改成功',

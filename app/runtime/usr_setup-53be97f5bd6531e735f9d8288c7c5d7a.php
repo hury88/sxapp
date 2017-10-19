@@ -50,5 +50,5 @@
 
 	</body>
 	<script type="text/javascript" src="/public/tools/js/jquery.js"></script>
-<script type="text/javascript" src="/public/tools/js/kwjAlert.min.js"></script>
+<script type="text/javascript" src="/public/tools/js/alert.min.js"></script>
 </html>
