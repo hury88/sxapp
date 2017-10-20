@@ -13,11 +13,6 @@ if(isset($_GET['shipping_status'])){
     $map['shipping_status']=$shipping_status;
 }
 
-if($order_status==1&&$shipping_status==1){
-    $
-}elseif($order_status==0&&$shipping_status==1){
-}else{
-}
 //条件
 
 ###########################筛选开始
@@ -29,7 +24,7 @@ $order_no    =   I('get.order_no','','trim');if(!empty($order_no))$map['order_no
 $psize   =   I('get.psize',30,'intval');
 $pageConfig = array(
     /*条件*/'where' => $map,
-    /*排序*/'order' => 'order_status asc,shipping_status asc,id desc',
+    /*排序*/'order' => 'order_status asc,shipping_status asc,finish_time desc,consign_time desc,id desc',
     /*条数*/'psize' => $psize,
     /*表  */'table' => $table,
     );
@@ -70,16 +65,51 @@ list($data,$pagestr) = Page::paging($pageConfig);
         <td> 定单总价 </td>
         <td> 定单详情 </td>
         <td>订单状态(点击可改变状态不可逆)</td>
-    <td width="135px">创建订单时间</td>
+        <td width="150px">订单操作时间</td>
 </tr>
-<?php
+<script type="text/javascript">
+    $(function () {
+        $(".ps").click(function(){
+            var ids=$(this).data("id")
+            var no=$(this).data("no")
+            var bid=$(this).data("bid")
+            $.get("./include/action.php?a=order_status&status=ps&ids="+ids+"&no="+no+"&bid="+bid,function(data){
+                if(data==1){
+                    window.parent.tophtml .location.reload()
+                    location.href='order.php?order_status=0&shipping_status=1';
+                }else{
+                    return false
+                }
+            })
+        })
+        $(".wc").click(function(){
+            var ids=$(this).data("id")
+            var no=$(this).data("no")
+            var bid=$(this).data("bid")
+            $.get("./include/action.php?a=order_status&status=wc&ids="+ids+"&no="+no+"&bid="+bid,function(data){
+                if(data==1){
+                    window.parent.tophtml .location.reload()
+                    location.href='order.php?order_status=1&shipping_status=1';
+                }else{
+                    return false
+                }
+            })
+        })
+    })
+
+</script>
+
+        <?php
     foreach ($data as $key => $bd) : extract($bd);
     if($order_status==1&&$shipping_status==1){
         $xorder_status="<a style='color:white;display: block;cursor:pointer;background: green;width: 70%;margin: 0 auto;text-align: center'>已完成</a>";
+        $time="完成时间".date("Y-m-d H:i:s",$finish_time);
     }elseif($order_status==0&&$shipping_status==1){
-        $xorder_status='<a style="color:white;background: rebeccapurple;width: 70%;margin: 0 auto;display: block;cursor: pointer;text-align: center" id="wc" title="点击完成订单">未完成已配送</a>';
+        $time="配送时间".date("Y-m-d H:i:s",$consign_time);
+        $xorder_status='<a style="color:white;background: rebeccapurple;width: 70%;margin: 0 auto;display: block;cursor: pointer;text-align: center" class="wc" title="点击完成订单" data-id="'.$id.'" , data-bid="'.$buyer_id.'" , data-no="'.$order_no.'">未完成已配送</a>';
     }else{
-        $xorder_status='<a style="color:white;background: red;width: 70%;margin: 0 auto;display: block;cursor: pointer;text-align: center" id="ps" title="点击配送">未配送</a>';
+        $time="下单时间".$create_time;
+        $xorder_status='<a style="color:white;background: red;width: 70%;margin: 0 auto;display: block;cursor: pointer;text-align: center" class="ps" title="点击配送" data-id="'.$id.'" , data-bid="'.$buyer_id.'" , data-no="'.$order_no.'">未配送</a>';
     }
 ?>
 <tbody>
@@ -92,15 +122,11 @@ list($data,$pagestr) = Page::paging($pageConfig);
         <td><?=$receiver_mobile?></td>
         <td><?=$receiver_pcd?>-<?=$receiver_address?></td>
         <td><?=$goods_money?></td>
-        <td><a href="order_detail.php?id=<?php echo $id;?>" target="righthtml">订单详情</a></td>
+        <td><a href="order_detail.php?order_no=<?php echo $order_no;?>" target="righthtml">订单详情</a></td>
         <td><?=$xorder_status?></td>
-        <td><?=$create_time?></td>
+        <td><?=$time?></td>
  </tr>
-    <script type="text/javascript">
-        $("#wc").click(function(){
 
-        })
-    </script>
 <?php
     endforeach;
     define('DEL_TIME_SORT',1);

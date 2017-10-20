@@ -4,6 +4,8 @@ require 'chkuser.inc.php';
 
 //所有的提交集中处理
 $a = I('get.a','');
+
+
 $t = I('t','');//表名
 $s = I('s',0,'intval');
 $id= I('id', 0,'intval');
@@ -12,7 +14,40 @@ if(empty($t))$t='news';
 $pid   =   I('pid',0,'intval');
 $ty    =   I('ty', 0,'intval');
 $tty   =   I('tty',0,'intval');
+if($a=="order_status"){
+    $status= I('status','','trim');
+    $time=time();
+    $ids = I('ids', 0, 'intval');
+    $no = I('no', '', 'trim');
+    $uid = I('bid', 0, 'intval');
+    if($status=="ps") {
 
+        $title = "订单" . $no . "信息";
+        $msg = date("Y-m-d H:i:s") ."订单" . $no . "开始配送";
+
+        $cid = MsgBox::add($title, $msg, $uid);
+        if ($cid) {
+
+            M("order")->where("id=" . $ids)->update(array("shipping_status" => 1,"consign_time"=>$time));
+            echo 1;
+        } else {
+            echo 0;
+        }
+    }elseif($status=="wc") {
+        $title = "订单" . $no . "信息";
+        $msg = date("Y-m-d H:i:s") ."订单" . $no . "交易完成";
+        $cid = MsgBox::add($title, $msg, $uid);
+        if ($cid) {
+            M("order")->where("id=" . $ids)->update(array("order_status" => 1,"finish_time"=>$time));
+            echo 1;
+        } else {
+            echo 0;
+        }
+    }else{
+        echo 0;
+    }
+    exit();
+}
 if(IS_GET){
 
 	//改变状态
