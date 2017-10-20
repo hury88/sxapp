@@ -25,7 +25,7 @@ return [
         // 服务器地址
         'hostname'        => '192.168.0.88',
         // 数据库名
-        'database'        => 'db_sxpsappx',
+        'database'        => 'db_sxpsapp',
         // 数据库用户名
         'username'        => 'tongyong',
         // 数据库密码
