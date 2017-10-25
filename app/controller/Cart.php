@@ -7,7 +7,7 @@ class Cart extends KWAction
 	public function index(){
 		$addressId = I('get.addressId', 0, 'intval');
 		if (! $addressId) {
-			if ($uid = Person::get()->_pk) {
+			if ($uid = Person::get()->getPk()) {
 				$addressId = M('usr_address')->where('uid='.$uid)->order('is_default desc')->getField('id');
 			}
 		}
@@ -16,7 +16,7 @@ class Cart extends KWAction
 		$acar = $this->shopCar->cart;
 		$goodMD = KWFactory::create('GoodsModel');
 		foreach ($acar as $goods_id => &$value) {
-			if ($goods_info = $goodMD->field('*')->find($goods_id)) {
+			if ($value['num'] && $goods_info = $goodMD->field('*')->find($goods_id)) {
 				$value = array_merge($value, $goods_info);
 			} else {
 				unset($acar[$goods_id]);

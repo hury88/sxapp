@@ -12,25 +12,14 @@ class ShopCar extends KWModel
 
 	#存储购物车数据
 	public $cart;
-
-	/*购物车复杂存储结构
-	* [id]   :array  商品id值;
-	* [num]:int    商品数量;
-	* [info] :array  商品信息 [goods]=>array( ['id']=>商品ID , ['data'] => array( [商品ID]=>array ( [sell_price]价格, [count]购物车中此商品的数量 ,[type]类型goods,product ,[goods_id]商品ID值 ) ) ) , [product]=>array( 同上 ) , [count]购物车商品和货品数量 , [sum]商品和货品总额 ;
-	* [sum]  :int    商品总价格;
-	*/
 	//购物车名字前缀
 	private $cartName    = 'cart';
-
 	//购物车中最多容纳的数量
 	private $maxCount    = 100;
-
 	//错误信息
 	public $error       = '';
-
 	//购物车的存储方式
 	private $saveType    = 'cookie';
-
 	//购物车的存储方式
 	private $isLogin    = false;
 
@@ -86,28 +75,55 @@ class ShopCar extends KWModel
 
 	private function aog_good_cal($gid, $num, $operate)
 	{
-		if (isset($this->cart[$gid])) {
+		$good_num = isset($this->cart[$gid]) ? $this->cart[$gid]['num'] : 0;
+		if ($good_num) {
 			switch ($operate) {
 				case self::operator_rising:
-					$this->cart[$gid] += $num;
+					$good_num += $num;
 					break;
 				case self::operator_reduce:
-					$this->cart[$gid] -= $num;
+					$good_num -= $num;
 					break;
 				case self::operator_assign:
-					$this->cart[$gid] = $num;
+					$good_num = $num;
 					break;
 				default :
-					$this->cart[$gid] = 1;
+					$good_num = 1;
 					break;
 			}
 		} else {
-			$this->cart[$gid] = $num;
+			$good_num = $num;
 		}
-		if ($this->cart[$gid] <= 0) {
-			unset($this->cart[$gid]);
+		$this->setGoodNum($gid, $good_num);
+		if ($good_num <= 0) {
+			$this->unsetGood($gid);
 		}
 
+	}
+
+	// 设置购物车商品数量
+	private function setGoodNum($gid, $num)
+	{
+		$this->cart[$gid]['num'] = $num;
+	}
+	// 获取购物车商品数量
+	private function getGoodNum($gid)
+	{
+		return $this->cart[$gid]['num'];
+	}
+	// 删除购物车商品
+	private function unsetGood($gid)
+	{
+		unset($this->cart[$gid]);
+	}
+
+	public function getGoodsCount()
+	{
+		$count = 0;
+		foreach ($this->cart as $gs) {
+			$count += $gs['num'];
+		}
+		return $count;
 	}
 
 	private function detection_good($gid) {
@@ -124,15 +140,6 @@ class ShopCar extends KWModel
 			$this->error = config('tips_cart.good_404');
 		}
 		return false;
-	}
-
-	public function getGoodsCount()
-	{
-		$count = 0;
-		foreach ($this->cart as $gs) {
-			$count += $gs;
-		}
-		return $count;
 	}
 
 	//写入购物车

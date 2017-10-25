@@ -21,15 +21,12 @@
 			.xzz{background: #e4e4e4 !important;}
 			.no {position:absolute;top:50%;text-align: center;width: 100%;background: white; font-weight: bold; color: #666;}
 		</style>
-
-
-
 	</head>
 
 	<body>
 		<?php if (!$this->_vars['list']){?>
 		<div class="no">
-	    	<p>暂无数据，敬请期待！</p>
+	    	<p>购物空空的,快去<a href="<?php echo U('goods/index');?>">逛逛</a>吧!</p>
 	    </div>
 		<?php } ?>
 		<div class="topnav" style="color: #000000;border-bottom: 8px solid #F4F4F4;height: 65px;">
@@ -68,7 +65,10 @@
 			<ul>
 				<?php foreach ($this->_vars['list'] as $key=>$row) {@extract($row);?>
 				<li class="clr">
-					<a href="javascript:;" class="xuanzhong fl"><img src="/style/img/gwc_13.png" /><img src="/style/img/gwc_08.png" class="img2" /></a>
+					<a href="javascript:;" class="xuanzhong fl">
+						<img src="/style/img/gwc_13.png" />
+						<img src="/style/img/gwc_08.png" class="img2" />
+					</a>
 					<a href="<?php echo U('goods/view', ['id'=>$id]);?>" class="productimg fl"><img src="<?php echo src($img1);?>" /></a>
 					<div class="fr">
 						<div>
@@ -92,7 +92,7 @@
 		<div style="height: 2.3rem;background: #f1f2f7;"></div>
 		<div class="shanchu">
 			<label>
-				<a class="shan xuanzhong fl" style="padding-left:.5rem;font-size:0.25rem">
+				<a id="quanxuan" style="padding-left:.5rem;font-size:0.25rem">
 					<img src="/style/img/gwc_13.png" />
 					<img src="/style/img/gwc_08.png" class="img3" />
 					全选
@@ -142,21 +142,73 @@
 
 	</body>
 
-	<script type="text/javascript" src="/style/js/js.js" ></script>
-	<script type="text/javascript" src="/public/tools/js/kwjAlert.min.js" ></script>
+	<script type="text/javascript" src="/public/tools/js/jquery.js"></script>
+<script type="text/javascript" src="/public/tools/js/alert.min.js"></script>
 
 	<script>
-		function edit() {
-
+	var selectedClass = "kw-selected";
+	var checkboxsClassName = ".xuanzhong";
+	var checkboxs = $(checkboxsClassName),
+	    quanxuanBtn = $('#quanxuan')
+	;
+	quanxuanBtn.click(function(){
+		if ($(this).hasClass(selectedClass)) {
+			quanxuan(0);
+			unchecked();
+		} else {
+			quanxuan(1);
+			check();
 		}
-
-		function over() {
-
+	})
+	// 子按钮绑定切换状态
+	checkboxs.click(function(){
+		var index = $(this).index(checkboxsClassName);
+		toggle($(this), index);
+	})
+	// 切换子按钮状态
+	function toggle(obj,index){
+		if (obj.hasClass(selectedClass)) {
+			unchecked(index);
+			quanxuan(0);
+		} else {
+			check(index);
+			if (checkboxs.length == $("."+selectedClass).length) {
+				quanxuan(1);
+			} else {
+				quanxuan(0);
+			}
 		}
-	</script>
+	}
+	// 切换为选中
+	function check(index){
+		if (typeof index == 'undefined') {
+			checkboxs.addClass(selectedClass).children(".img2").show();
+		} else {
+			checkboxs.eq(index).addClass(selectedClass).children(".img2").show();
+		}
+	}
+	// 切换为未选中
+	function unchecked(index){
+		if (typeof index == 'undefined') {
+			checkboxs.removeClass(selectedClass).children(".img2").hide();
+		} else {
+			checkboxs.eq(index).removeClass(selectedClass).children(".img2").hide();
+		}
+	}
+	// 全选切换为选中
+	function quanxuan(status){
+		if (status==1) {// _check
+			quanxuanBtn.addClass(selectedClass).children(".img3").show();
+		} else {// _unchecked
+			quanxuanBtn.removeClass(selectedClass).children(".img3").hide();
+		}
+	}
+	function edit(){
 
-	<script>
-	dialog(1,['测试成功!!',"这是个标题"],{cancel:['haha','http:www.baidu.com']});
+	}
+	function over(){
+
+	}
 	</script>
 
 </html>

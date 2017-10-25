@@ -34,7 +34,7 @@
 		</form>
 	</body>
 	<script type="text/javascript" src="/public/tools/js/jquery.js"></script>
-<script type="text/javascript" src="/public/tools/js/kwjAlert.min.js"></script>
+<script type="text/javascript" src="/public/tools/js/alert.min.js"></script>
 	<script>
 		//图片上传预览    IE是用了滤镜。
 		function previewImage(file,id,mid)
